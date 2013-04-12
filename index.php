@@ -32,6 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			throw new Exception('At least select one file.');
 		}
 		
+		if ($_POST['language'] && !preg_match('/^[a-z]{2}$/', $_POST['language'])) {
+			throw new Exception('Invalid ISO 639-1 language code.');
+		}
+		
 		if ($_FILES['icon']['error'] == 0 || $_FILES['splash']['error'] == 0) {
 			$uniqid			= uniqid();
 			$assets_path	= $_POST['alloy'] ? '/app/assets' : '/Resources';
@@ -118,30 +122,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 		
 			if ($_FILES['splash']['error'] == 0) {
+				$ios_path = $_POST['language'] ? '/project/i18n/' . $_POST['language'] : '/project' . $assets . '/iphone';
+				$android_prefix = $_POST['language'] ? $_POST['language'] . '-' : '';
 
 				$sizes = array(
 				
 					// iOS
-					array('/project' . $assets . '/iphone/Default.png', 320, 460, 72),
-					array('/project' . $assets . '/iphone/Default@2x.png', 640, 960, 72),
-					array('/project' . $assets . '/iphone/Default-568h@2x.png', 640, 1136, 72),
-					array('/project' . $assets . '/iphone/Default-Landscape.png', 1024, 748, 72),
-					array('/project' . $assets . '/iphone/Default-Portrait.png', 768, 1044, 72),
-					array('/project' . $assets . '/iphone/Default-Landscape@2x.png', 2048, 1496, 72),
-					array('/project' . $assets . '/iphone/Default-Portrait@2x.png', 1536, 2008, 72),
+					array($ios_path . '/Default.png', 320, 460, 72),
+					array($ios_path . '/Default@2x.png', 640, 960, 72),
+					array($ios_path . '/Default-568h@2x.png', 640, 1136, 72),
+					array($ios_path . '/Default-Landscape.png', 1024, 748, 72),
+					array($ios_path . '/Default-Portrait.png', 768, 1044, 72),
+					array($ios_path . '/Default-Landscape@2x.png', 2048, 1496, 72),
+					array($ios_path . '/Default-Portrait@2x.png', 1536, 2008, 72),
 				
 					// Android
 					array('/project' . $assets . '/android/default.png', 320, 480, 72),
-					array('/project' . $assets . '/android/images/res-long-land-hdpi/default.png', 800, 480, 240),
-					array('/project' . $assets . '/android/images/res-long-land-ldpi/default.png', 400, 240, 120),
-					array('/project' . $assets . '/android/images/res-long-port-hdpi/default.png', 480, 800, 240),
-					array('/project' . $assets . '/android/images/res-long-land-ldpi/default.png', 240, 400, 120),
-					array('/project' . $assets . '/android/images/res-notlong-land-hdpi/default.png', 800, 480, 240),
-					array('/project' . $assets . '/android/images/res-notlong-land-ldpi/default.png', 320, 240, 120),
-					array('/project' . $assets . '/android/images/res-notlong-land-mdpi/default.png', 480, 320, 160),
-					array('/project' . $assets . '/android/images/res-notlong-port-hdpi/default.png', 480, 800, 240),
-					array('/project' . $assets . '/android/images/res-notlong-port-ldpi/default.png', 240, 320, 120),
-					array('/project' . $assets . '/android/images/res-notlong-port-mdpi/default.png', 320, 480, 160),
+					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'long-land-hdpi/default.png', 800, 480, 240),
+					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 400, 240, 120),
+					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'long-port-hdpi/default.png', 480, 800, 240),
+					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 240, 400, 120),
+					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-land-hdpi/default.png', 800, 480, 240),
+					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-land-ldpi/default.png', 320, 240, 120),
+					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-land-mdpi/default.png', 480, 320, 160),
+					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-port-hdpi/default.png', 480, 800, 240),
+					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-port-ldpi/default.png', 240, 320, 120),
+					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-port-mdpi/default.png', 320, 480, 160),
 				
 					// Mobile Web
 					array('/project' . $assets . '/mobileweb/apple_startup_images/Default.jpg', 320, 460, 72),
@@ -331,10 +337,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<div class="span5">Splash screens come in all sorts of sizes and because they're not squarish, we need to crop. For this to work, you should select a 2048x2048 PNG where the logo or other important artwork is placed within the center 500x500 pixels.</div>
 			</div>
 			<div class="row-fluid">
+				<div class="span3"><h4>Language</h4></div>
+				<div class="span4">
+					<input type="text" name="language" class="input-mini" placeholder="e.g.: 'nl'" />
+				</div>
+				<div class="span5">Specify a <a href="http://en.wikipedia.org/wiki/ISO_639-1" target="_blank">ISO 639-1</a> language code to write iOS and Android splash screens to <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-LocalizedSplashScreens" target="_blank">localized paths</a>. You would need to run TiCons for every required language and then merge the resulting asset folders.</div>
+			</div>
+			<div class="row-fluid">
 				<div class="span3"><h4>Alloy</h4></div>
 				<div class="span9">
 					<label class="checkbox" for="alloy">
-					  <input type="checkbox" name="alloy" value="1" id="alloy"> Output to <code>app/assets</code> instead of <code>Resources</code>.
+					  <input type="checkbox" name="alloy" value="1" id="alloy"> Writes to <code>app/assets</code> instead of <code>Resources</code>.
 					</label>
 				</div>
 			</div>
@@ -368,9 +381,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
           <h4>Mobile Web</h4>
           <p>There is partial support for <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-MobileWebgraphicassetrequirementsandoptions" target="_blank">Mobile Web</a>. HTML splash screens are currently not generated.</p>
-
-          <h4>Localized Splash Screens</h4>
-          <p>There is no support for <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-LocalizedSplashScreens" target="_blank">Localized Splash Screens</a>.</p>
 
           <h4>BlackBerry & Tizen</h4>
           <p>There is no support for BlackBerry (10) and Tizen.</p>
