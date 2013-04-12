@@ -396,7 +396,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <hr>
 
       <div class="footer">
-        <p>&copy; <a href="http://www.fokkezandbergen.nl" target="_blank">Fokke Zandbergen</a> 2013 - <a href="https://github.com/FokkeZB/TiCons">License</a></p>
+        <p>&copy; <a href="http://www.fokkezb.nl" target="_blank">Fokke Zandbergen</a> 2013 - <a href="https://github.com/FokkeZB/TiCons">License</a></p>
       </div>
 
     </div>
