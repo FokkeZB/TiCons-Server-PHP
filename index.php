@@ -209,6 +209,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			@unlink($_FILES['splash']['tmp_name']);
 		}
 		
+		shell_exec('find ' . dirname(__FILE__) . '/zip/ -type f -name "*.zip" -mindepth 1 -maxdepth 1 -mmin +60 -exec rm {} \;');
+		
 		if ($download) {
 			header('Location: ' . $zip_url);
 			exit;
@@ -224,8 +226,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>TiCons - Generate Titanium icon & splash assets from just 2 files!</title>
-    <meta name="description" content="Generate all your Titanium app icon & splash assets from just 2 files.">
+    <title>TiCons - Generate all icon & splash screens for your Titanium app from just 2 or 3 files!</title>
+    <meta name="description" content="Generate all icon & splash screens for your Titanium app from just 2 or 3 files!">
     <meta name="author" content="Fokke Zandbergen">
     <link href="jbootstrap/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
@@ -284,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       <div class="jumbotron">
         <h2>Generate Titanium icon & splash assets</h2>
-        <p class="lead">Select 2 sources files and get a ZIP with all you need!</p>
+        <p class="lead">Select 2 or 3 source files and get a ZIP with all you need!</p>
       </div>
       
       <? if ($error): ?>

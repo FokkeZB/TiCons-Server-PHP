@@ -12,7 +12,6 @@ I hope to extend TiCons with the following features:
 * Support BlackBerry & Tizen.
 * Provide a PSD containing guides for optimal splash screen cropping-pleasure.
 * Let the use select which platforms and formfactors to generate assets for.
-* Automatically delete generated ZIP files after some time.
 
 Feel free to [mail](mail@fokkezb.nl) me or fork the code and send a pull-request.
 
