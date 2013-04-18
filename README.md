@@ -1,5 +1,5 @@
 #TiCons
-Generate a ZIP with all Titanium [icons & splash screens](http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens) from just 2 or 3 files.
+Generate a ZIP with all (iOS, Android, Mobile Web, Tizen, BlackBerry) Titanium [icons & splash screens](http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens) from just 2 or 3 files.
 
 ## Website
 Use TiCons online at: [http://ticons.fokkezb.nl/](http://ticons.fokkezb.nl/)
@@ -9,7 +9,6 @@ I hope to extend TiCons with the following features:
 
 * Generate HTML splash screen based on icon and background color.
 * Generate Android nine-patch splash screen based on icon and background color or texture.
-* Support BlackBerry & Tizen.
 * Provide a PSD containing guides for optimal splash screen cropping-pleasure.
 * Let the use select which platforms and formfactors to generate assets for.
 

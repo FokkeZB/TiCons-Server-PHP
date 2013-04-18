@@ -20,23 +20,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			throw new Exception($messages[$_FILES['icon']['error']]);
 		}
 
-		if ($_FILES['icon-android']['error'] != 0 && $_FILES['icon-android']['error'] != 4) {
-			throw new Exception($messages[$_FILES['icon-android']['error']]);
+		if ($_FILES['icon-transparent']['error'] != 0 && $_FILES['icon-transparent']['error'] != 4) {
+			throw new Exception($messages[$_FILES['icon-transparent']['error']]);
 		}
 				
 		if ($_FILES['splash']['error'] != 0 && $_FILES['splash']['error'] != 4) {
 			throw new Exception($messages[$_FILES['splash']['error']]);
 		}
 		
-		if ($_FILES['icon']['error'] == 4 && $_FILES['icon-android']['error'] == 4 && $_FILES['splash']['error'] == 4) {
+		if ($_FILES['icon']['error'] == 4 && $_FILES['icon-transparent']['error'] == 4 && $_FILES['splash']['error'] == 4) {
 			throw new Exception('At least select one file.');
 		}
 		
 		if ($_POST['language'] && !preg_match('/^[a-z]{2}$/', $_POST['language'])) {
 			throw new Exception('Invalid ISO 639-1 language code.');
 		}
-		
-		if ($_FILES['icon']['error'] == 0 || $_FILES['splash']['error'] == 0) {
+
+		if ($_FILES['icon']['error'] == 0 || $_FILES['icon-transparent']['error'] == 0 || $_FILES['splash']['error'] == 0) {
 			$uniqid			= uniqid();
 			$assets_path	= $_POST['alloy'] ? '/app/assets' : '/Resources';
 			$tmp_path 		= dirname(__FILE__) . '/tmp/' . $uniqid;
@@ -58,15 +58,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				$sizes = array(
 			
 					// iOS
-					array('/project' . $assets . '/iphone/appicon.png', 57, 72),
-					array('/project' . $assets . '/iphone/appicon@2x.png', 114, 72),
-					array('/project' . $assets . '/iphone/appicon-72.png', 72, 72),
-					array('/project' . $assets . '/iphone/appicon-72@2x.png', 144, 72),
-					array('/project' . $assets . '/iphone/appicon-Small.png', 29, 72),
-					array('/project' . $assets . '/iphone/appicon-Small@2x.png', 58, 72),
-					array('/project' . $assets . '/iphone/appicon-Small-50.png', 50, 72),
-					array('/project' . $assets . '/iphone/appicon-Small-50@2x.png', 100, 72),
-					array('/project' . $assets . '/iphone/iTunesArtwork', 512, 72),
+					array('/project' . $assets_path . '/iphone/appicon.png', 57, 72),
+					array('/project' . $assets_path . '/iphone/appicon@2x.png', 114, 72),
+					array('/project' . $assets_path . '/iphone/appicon-72.png', 72, 72),
+					array('/project' . $assets_path . '/iphone/appicon-72@2x.png', 144, 72),
+					array('/project' . $assets_path . '/iphone/appicon-Small.png', 29, 72),
+					array('/project' . $assets_path . '/iphone/appicon-Small@2x.png', 58, 72),
+					array('/project' . $assets_path . '/iphone/appicon-Small-50.png', 50, 72),
+					array('/project' . $assets_path . '/iphone/appicon-Small-50@2x.png', 100, 72),
+					array('/project' . $assets_path . '/iphone/iTunesArtwork', 512, 72),
 					array('/iTunesConnect/icon.png', 1024, 72),
 				);
 		
@@ -86,14 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$image->writeImage($tmp_path . $size[ICON_PATH]);
 				}
 			}
-		
-			if ($_FILES['icon']['error'] == 0 || $_FILES['icon-android']['error'] == 0) {
-				$FILE = ($_FILES['icon-android']['error'] == 0) ? $_FILES['icon-android'] : $_FILES['icon'];
+
+			if ($_FILES['icon']['error'] == 0 || $_FILES['icon-transparent']['error'] == 0) {
+				$FILE = ($_FILES['icon-transparent']['error'] == 0) ? $_FILES['icon-transparent'] : $_FILES['icon'];
 
 				$sizes = array(
 				
 					// Android
-					array('/project' . $assets . '/android/appicon.png', 128, 72),
+					array('/project' . $assets_path . '/android/appicon.png', 128, 72),
 					array('/project/platform/android/res/drawable-ldpi/appicon.png', 36, 120),
 					array('/project/platform/android/res/drawable-mdpi/appicon.png', 48, 160),
 					array('/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240),
@@ -101,7 +101,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					array('/GooglePlay/icon.png', 512, 72),
 					
 					// Mobile Web
-					array('/project' . $assets . '/mobileweb/appicon.png', 128, 72),
+					array('/project' . $assets_path . '/mobileweb/appicon.png', 128, 72),
+					
+					// Tizen
+					array('/project' . $assets_path . '/tizen/appicon.png', 96, 72),
+					
+					// BlackBerry
+					array('/project' . $assets_path . '/blackberry/appicon.png', 86, 72),
 				);
 		
 				foreach ($sizes as $size) {
@@ -122,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 		
 			if ($_FILES['splash']['error'] == 0) {
-				$ios_path = $_POST['language'] ? '/project/i18n/' . $_POST['language'] : '/project' . $assets . '/iphone';
+				$ios_path = $_POST['language'] ? '/project/i18n/' . $_POST['language'] : '/project' . $assets_path . '/iphone';
 				$android_prefix = $_POST['language'] ? $_POST['language'] . '-' : '';
 
 				$sizes = array(
@@ -137,25 +143,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					array($ios_path . '/Default-Portrait@2x.png', 1536, 2008, 72),
 				
 					// Android
-					array('/project' . $assets . '/android/default.png', 320, 480, 72),
-					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'long-land-hdpi/default.png', 800, 480, 240),
-					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 400, 240, 120),
-					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'long-port-hdpi/default.png', 480, 800, 240),
-					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 240, 400, 120),
-					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-land-hdpi/default.png', 800, 480, 240),
-					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-land-ldpi/default.png', 320, 240, 120),
-					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-land-mdpi/default.png', 480, 320, 160),
-					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-port-hdpi/default.png', 480, 800, 240),
-					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-port-ldpi/default.png', 240, 320, 120),
-					array('/project' . $assets . '/android/images/res-' . $android_prefix . 'notlong-port-mdpi/default.png', 320, 480, 160),
+					array('/project' . $assets_path . '/android/default.png', 320, 480, 72),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-hdpi/default.png', 800, 480, 240),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 400, 240, 120),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-hdpi/default.png', 480, 800, 240),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 240, 400, 120),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-hdpi/default.png', 800, 480, 240),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-ldpi/default.png', 320, 240, 120),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-mdpi/default.png', 480, 320, 160),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-hdpi/default.png', 480, 800, 240),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-ldpi/default.png', 240, 320, 120),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-mdpi/default.png', 320, 480, 160),
 				
 					// Mobile Web
-					array('/project' . $assets . '/mobileweb/apple_startup_images/Default.jpg', 320, 460, 72),
-					array('/project' . $assets . '/mobileweb/apple_startup_images/Default.png', 320, 460, 72),
-					array('/project' . $assets . '/mobileweb/apple_startup_images/Default-Landscape.jpg', 748, 1024, 72, 90),
-					array('/project' . $assets . '/mobileweb/apple_startup_images/Default-Landscape.png', 748, 1024, 72, 90),
-					array('/project' . $assets . '/mobileweb/apple_startup_images/Default-Portrait.jpg', 768, 1004, 72),
-					array('/project' . $assets . '/mobileweb/apple_startup_images/Default-Portrait.png', 768, 1004, 72),
+					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default.jpg', 320, 460, 72),
+					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default.png', 320, 460, 72),
+					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Landscape.jpg', 748, 1024, 72, 90),
+					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Landscape.png', 748, 1024, 72, 90),
+					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Portrait.jpg', 768, 1004, 72),
+					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Portrait.png', 768, 1004, 72),
+				
+					// BlackBerry
+					array('/project' . $assets_path . '/blackberry/splash-600x1024.png', 600, 1024, 72),
 				);
 		
 				foreach ($sizes as $size) {
@@ -170,12 +179,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$image = new Imagick();
 					$image->setResolution($size[SPLASH_DPI], $size[SPLASH_DPI]);
 					$image->readImage($_FILES['splash']['tmp_name']);
+					$image->stripImage();
 				
 					if ($ext == 'jpg') {
-						$image->setImageCompression(Imagick::COMPRESSION_JPEG);
-						$image->setImageCompressionQuality(100);
-						$image->stripImage(); 
 						$image->setImageFormat('jpeg');
+						$image->setImageCompression(Imagick::COMPRESSION_JPEG);
+						$image->setImageCompressionQuality(100);						
 				
 					} else {
 						$image->setImageFormat('png');
@@ -201,8 +210,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			@unlink($_FILES['icon']['tmp_name']);
 		}
 	
-		if ($_FILES['icon-android']['tmp_name'] != '') {
-			@unlink($_FILES['icon-android']['tmp_name']);
+		if ($_FILES['icon-transparent']['tmp_name'] != '') {
+			@unlink($_FILES['icon-transparent']['tmp_name']);
 		}
 
 		if ($_FILES['splash']['tmp_name'] != '') {
@@ -267,9 +276,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       }
       
     </style>
+	<script src="http://code.jquery.com/jquery.js"></script>
+    <script src="jbootstrap/js/bootstrap.min.js"></script>
   </head>
 
   <body>
+  
+  	<? @include('analytics.php') ?>
 
     <div class="container-narrow">
 
@@ -311,18 +324,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<div class="span5">Select a 1024x1024 PNG with <strong>no</strong> rounded corners or transparency. You <strong>can</strong> add a custom reflective shine or other effect, but be sure to <a href="#about">disable the default iOS shine</a> in that case.</div>
 			</div>
 			<div class="row-fluid">
-				<div class="span3"><h4>Android icon</h4></div>
+				<div class="span3"><h4>Transparent icon</h4></div>
 				<div class="span4">
 					<div class="fileupload fileupload-new" data-provides="fileupload">
 					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://dummyimage.com/100x100/eeeeee/333333.png&text=%20%20512x512%20%20" /></div>
 					  <div class="fileupload-preview fileupload-exists thumbnail" style="width: 100px; height: 100px;"></div>
 					  <div>
-						<span class="btn btn-file"><span class="fileupload-new">Select</span><span class="fileupload-exists">Replace</span><input type="file" name="icon-android" /></span>
+						<span class="btn btn-file"><span class="fileupload-new">Select</span><span class="fileupload-exists">Replace</span><input type="file" name="icon-transparent" /></span>
 						<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
 					  </div>
 					</div>
 				</div>
-				<div class="span5">For Android you can select an alternative 512x512 PNG icon. Android does not apply any effects and promotes using transparency for <a href="http://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html" target="_blank">unique shapes</a>. When provided, this icon will be used to generate the mobile web icon as well.</div>
+				<div class="span5">For Android, Mobile Web, BlackBerry and Tizen you can select an alternative 512x512 PNG icon. These platforms do not apply any default effects and promote using transparency for create <a href="http://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html" target="_blank">unique shapes</a>.</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span3"><h4>Splash</h4></div>
@@ -355,7 +368,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			</div>
 			<div class="row-fluid">
 				 <div class="offset3 span4">
-				 	<input type="submit" class="btn btn-large btn-success" value="Generate" />
+				 	<input type="submit" class="btn btn-large btn-success" value="Generate" id="generate" />
 				 </div>
 			</div>
         </form>
@@ -370,22 +383,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         	<h4>App stores</h4>
         	<p>TiCons also generates iTunes Connect and Google Play assets for you.</p>
+
+            <h4>BlackBerry & Tizen</h4>
+            <p>TiCons will generate a Tizen icon and both icon and splash for BlackBerry 10.</p>
         
 			<h4>Filters</h4>
 			<p>TiCons does not apply any filters. iOS automatically adds rounded corners and a drop shadow. By default, it also adds a reflective shine. You can disable this in your <code><a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-Pre-renderediconsoniOS" target="_blank">tiapp.xml</a></code>.</p>
-			
-			<h4>Android nine-patch splash</h4>
-			<p>To better support the many differend Android display sizes and densities, you could <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-Splashscreens" target="_blank">use a nine-patch image for your splash screen</a>. This is not supported by TiCons right now.</p>
-          
+			          
         </div>
 
         <div class="span6">
         
+			<h4>Android nine-patch splash</h4>
+			<p>To better support the many differend Android display sizes and densities, you could <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-Splashscreens" target="_blank">use a nine-patch image for your splash screen</a>. This is not supported by TiCons right now.</p>
+        
           <h4>Mobile Web</h4>
           <p>There is partial support for <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-MobileWebgraphicassetrequirementsandoptions" target="_blank">Mobile Web</a>. HTML splash screens are currently not generated.</p>
-
-          <h4>BlackBerry & Tizen</h4>
-          <p>There is no support for BlackBerry (10) and Tizen.</p>
           
           <h4>Contribute</h4>
           <p>Feel free to contact me at <a href="mailto:mail@fokkezb.nl">mail@fokkezb.nl</a> or <a href="https://github.com/FokkeZB/TiCons" target="_blank">fork</a> the code and send a pull request.<p>
@@ -400,9 +413,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       </div>
 
     </div>
-    
-	<script src="http://code.jquery.com/jquery.js"></script>
-    <script src="jbootstrap/js/bootstrap.min.js"></script>
 
   </body>
 </html>
