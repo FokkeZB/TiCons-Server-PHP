@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-hdpi/default.png', 800, 480, 240),
 					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 400, 240, 120),
 					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-hdpi/default.png', 480, 800, 240),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 240, 400, 120),
+					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-ldpi/default.png', 240, 400, 120),
 					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-hdpi/default.png', 800, 480, 240),
 					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-ldpi/default.png', 320, 240, 120),
 					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-mdpi/default.png', 480, 320, 160),
