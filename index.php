@@ -134,11 +134,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				$sizes = array(
 				
 					// iOS
-					array($ios_path . '/Default.png', 320, 460, 72),
+					array($ios_path . '/Default.png', 320, $_POST['apple'] ? 480 : 460, 72),
 					array($ios_path . '/Default@2x.png', 640, 960, 72),
 					array($ios_path . '/Default-568h@2x.png', 640, 1136, 72),
 					array($ios_path . '/Default-Landscape.png', 1024, 748, 72),
-					array($ios_path . '/Default-Portrait.png', 768, 1044, 72),
+					array($ios_path . '/Default-Portrait.png', 768, $_POST['apple'] ? 1004 : 1044, 72),
 					array($ios_path . '/Default-Landscape@2x.png', 2048, 1496, 72),
 					array($ios_path . '/Default-Portrait@2x.png', 1536, 2008, 72),
 				
@@ -357,6 +357,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<input type="text" name="language" class="input-mini" placeholder="e.g.: 'nl'" />
 				</div>
 				<div class="span5">Specify a <a href="http://en.wikipedia.org/wiki/ISO_639-1" target="_blank">ISO 639-1</a> language code to write iOS and Android splash screens to <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-LocalizedSplashScreens" target="_blank">localized paths</a>. You would need to run TiCons for every required language and then merge the resulting asset folders.</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span3"><h4>Apple specs</h4></div>
+				<div class="span9">
+					<label class="checkbox" for="apple">
+					  <input type="checkbox" name="apple" value="1" id="apple"> Conforms to <a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/App-RelatedResources/App-RelatedResources.html" target="_blank">Apple's specs for launch images</a> rather then Appcelerator's. This fixes the splash-shift caused by differences in iPad and iPhone 4 portrait dimensions.
+					</label>
+				</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span3"><h4>Alloy</h4></div>
