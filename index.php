@@ -35,6 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if ($_POST['language'] && !preg_match('/^[a-z]{2}$/', $_POST['language'])) {
 			throw new Exception('Invalid ISO 639-1 language code.');
 		}
+		
+		if (is_array($_POST['platforms']) == false || count($_POST['platforms']) == 0) {
+			throw new Exception('Select at least one platform.');
+		}
 
 		if ($_FILES['icon']['error'] == 0 || $_FILES['icon-transparent']['error'] == 0 || $_FILES['splash']['error'] == 0) {
 			$uniqid			= uniqid();
@@ -55,21 +59,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 			if ($_FILES['icon']['error'] == 0) {
 		
-				$sizes = array(
-			
-					// iOS
-					array('/project' . $assets_path . '/iphone/appicon.png', 57, 72),
-					array('/project' . $assets_path . '/iphone/appicon@2x.png', 114, 72),
-					array('/project' . $assets_path . '/iphone/appicon-72.png', 72, 72),
-					array('/project' . $assets_path . '/iphone/appicon-72@2x.png', 144, 72),
-					array('/project' . $assets_path . '/iphone/appicon-Small.png', 29, 72),
-					array('/project' . $assets_path . '/iphone/appicon-Small@2x.png', 58, 72),
-					array('/project' . $assets_path . '/iphone/appicon-Small-50.png', 50, 72),
-					array('/project' . $assets_path . '/iphone/appicon-Small-50@2x.png', 100, 72),
-					array('/project' . $assets_path . '/iphone/iTunesArtwork', 512, 72),
-					array('/iTunesConnect/icon.png', 1024, 72),
-				);
-		
+				$sizes = array();
+				
+				// iPhone & iPad
+				if (in_array('iphone', $_POST['platforms']) || in_array('ipad', $_POST['platforms'])) {
+					$sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small@2x.png', 58, 72);
+					$sizes[] = array('/iTunesConnect/icon.png', 1024, 72);
+					$sizes[] = array('/project' . $assets_path . '/iphone/iTunesArtwork', 512, 72);
+				
+					// iPhone
+					if (in_array('iphone', $_POST['platforms'])) {
+						$sizes[] = array('/project' . $assets_path . '/iphone/appicon.png', 57, 72);
+						$sizes[] = array('/project' . $assets_path . '/iphone/appicon@2x.png', 114, 72);
+						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small.png', 29, 72);
+					}
+				
+					// iPad
+					if (in_array('ipad', $_POST['platforms'])) {
+						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-72.png', 72, 72);
+						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-72@2x.png', 144, 72);
+						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small-50.png', 50, 72);
+						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small-50@2x.png', 100, 72);
+					}
+				}
+				
 				foreach ($sizes as $size) {
 					$dir = dirname($tmp_path . $size[ICON_PATH]);
 				
@@ -90,25 +103,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if ($_FILES['icon']['error'] == 0 || $_FILES['icon-transparent']['error'] == 0) {
 				$FILE = ($_FILES['icon-transparent']['error'] == 0) ? $_FILES['icon-transparent'] : $_FILES['icon'];
 
-				$sizes = array(
+				$sizes = array();
 				
-					// Android
-					array('/project' . $assets_path . '/android/appicon.png', 128, 72),
-					array('/project/platform/android/res/drawable-ldpi/appicon.png', 36, 120),
-					array('/project/platform/android/res/drawable-mdpi/appicon.png', 48, 160),
-					array('/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240),
-					array('/project/platform/android/res/drawable-xhdpi/appicon.png', 96, 320),
-					array('/GooglePlay/icon.png', 512, 72),
-					
-					// Mobile Web
-					array('/project' . $assets_path . '/mobileweb/appicon.png', 128, 72),
-					
-					// Tizen
-					array('/project' . $assets_path . '/tizen/appicon.png', 96, 72),
-					
-					// BlackBerry
-					array('/project' . $assets_path . '/blackberry/appicon.png', 86, 72),
-				);
+				// Android
+				if (in_array('android', $_POST['platforms'])) {
+					$sizes[] = array('/project' . $assets_path . '/android/appicon.png', 128, 72);
+					$sizes[] = array('/project/platform/android/res/drawable-ldpi/appicon.png', 36, 120);
+					$sizes[] = array('/project/platform/android/res/drawable-mdpi/appicon.png', 48, 160);
+					$sizes[] = array('/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240);
+					$sizes[] = array('/project/platform/android/res/drawable-xhdpi/appicon.png', 96, 320);
+					$sizes[] = array('/GooglePlay/icon.png', 512, 72);
+				}
+				
+				// Mobile Web
+				if (in_array('mobileweb', $_POST['platforms'])) {
+					$sizes[] = array('/project' . $assets_path . '/mobileweb/appicon.png', 128, 72);
+				}
+				
+				// Tizen
+				if (in_array('tizen', $_POST['platforms'])) {
+					$sizes[] = array('/project' . $assets_path . '/tizen/appicon.png', 96, 72);
+				}
+				
+				// BlackBerry
+				if (in_array('blackberry', $_POST['platforms'])) {
+					$sizes[] = array('/project' . $assets_path . '/blackberry/appicon.png', 86, 72);
+				}
 		
 				foreach ($sizes as $size) {
 					$dir = dirname($tmp_path . $size[ICON_PATH]);
@@ -131,41 +151,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				$ios_path = $_POST['language'] ? '/project/i18n/' . $_POST['language'] : '/project' . $assets_path . '/iphone';
 				$android_prefix = $_POST['language'] ? $_POST['language'] . '-' : '';
 
-				$sizes = array(
+				$sizes = array();
 				
-					// iOS
-					array($ios_path . '/Default.png', 320, $_POST['apple'] ? 480 : 460, 72),
-					array($ios_path . '/Default@2x.png', 640, 960, 72),
-					array($ios_path . '/Default-568h@2x.png', 640, 1136, 72),
-					array($ios_path . '/Default-Landscape.png', 1024, 748, 72),
-					array($ios_path . '/Default-Portrait.png', 768, $_POST['apple'] ? 1004 : 1044, 72),
-					array($ios_path . '/Default-Landscape@2x.png', 2048, 1496, 72),
-					array($ios_path . '/Default-Portrait@2x.png', 1536, 2008, 72),
+				// iPhone
+				if (in_array('iphone', $_POST['platforms'])) {
+					$sizes[] = array($ios_path . '/Default.png', 320, $_POST['apple'] ? 480 : 460, 72);
+					$sizes[] = array($ios_path . '/Default@2x.png', 640, 960, 72);
+					$sizes[] = array($ios_path . '/Default-568h@2x.png', 640, 1136, 72);
+				}
 				
-					// Android
-					array('/project' . $assets_path . '/android/default.png', 320, 480, 72),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-hdpi/default.png', 800, 480, 240),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 400, 240, 120),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-hdpi/default.png', 480, 800, 240),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-ldpi/default.png', 240, 400, 120),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-hdpi/default.png', 800, 480, 240),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-ldpi/default.png', 320, 240, 120),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-mdpi/default.png', 480, 320, 160),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-hdpi/default.png', 480, 800, 240),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-ldpi/default.png', 240, 320, 120),
-					array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-mdpi/default.png', 320, 480, 160),
+				// iPad
+				if (in_array('ipad', $_POST['platforms'])) {
+					$sizes[] = array($ios_path . '/Default-Landscape.png', 1024, 748, 72);
+					$sizes[] = array($ios_path . '/Default-Portrait.png', 768, $_POST['apple'] ? 1004 : 1044, 72);
+					$sizes[] = array($ios_path . '/Default-Landscape@2x.png', 2048, 1496, 72);
+					$sizes[] = array($ios_path . '/Default-Portrait@2x.png', 1536, 2008, 72);
+				}
 				
-					// Mobile Web
-					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default.jpg', 320, 460, 72),
-					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default.png', 320, 460, 72),
-					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Landscape.jpg', 748, 1024, 72, 90),
-					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Landscape.png', 748, 1024, 72, 90),
-					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Portrait.jpg', 768, 1004, 72),
-					array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Portrait.png', 768, 1004, 72),
+				// Android
+				if (in_array('android', $_POST['platforms'])) {
+					$sizes[] = array('/project' . $assets_path . '/android/default.png', 320, 480, 72);
+					$sizes[] = array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-hdpi/default.png', 800, 480, 240);
+					$sizes[] = array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 400, 240, 120);
+					$sizes[] = array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-hdpi/default.png', 480, 800, 240);
+					$sizes[] = array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 240, 400, 120);
+					$sizes[] = array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-hdpi/default.png', 800, 480, 240);
+					$sizes[] = array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-ldpi/default.png', 320, 240, 120);
+					$sizes[] = array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-mdpi/default.png', 480, 320, 160);
+					$sizes[] = array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-hdpi/default.png', 480, 800, 240);
+					$sizes[] = array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-ldpi/default.png', 240, 320, 120);
+					$sizes[] = array('/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-mdpi/default.png', 320, 480, 160);
+				}
 				
-					// BlackBerry
-					array('/project' . $assets_path . '/blackberry/splash-600x1024.png', 600, 1024, 72),
-				);
+				// Mobile Web
+				if (in_array('mobileweb', $_POST['platforms'])) {
+					$sizes[] = array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default.jpg', 320, 460, 72);
+					$sizes[] = array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default.png', 320, 460, 72);
+					$sizes[] = array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Landscape.jpg', 748, 1024, 72, 90);
+					$sizes[] = array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Landscape.png', 748, 1024, 72, 90);
+					$sizes[] = array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Portrait.jpg', 768, 1004, 72);
+					$sizes[] = array('/project' . $assets_path . '/mobileweb/apple_startup_images/Default-Portrait.png', 768, 1004, 72);
+				}
+				
+				// BlackBerry
+				if (in_array('blackberry', $_POST['platforms'])) {
+					$sizes[] = array('/project' . $assets_path . '/blackberry/splash-600x1024.png', 600, 1024, 72);
+				}
 		
 				foreach ($sizes as $size) {
 					$dir = dirname($tmp_path . $size[SPLASH_PATH]);
@@ -359,10 +390,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<div class="span5">Specify a <a href="http://en.wikipedia.org/wiki/ISO_639-1" target="_blank">ISO 639-1</a> language code to write iOS and Android splash screens to <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-LocalizedSplashScreens" target="_blank">localized paths</a>. You would need to run TiCons for every required language and then merge the resulting asset folders.</div>
 			</div>
 			<div class="row-fluid">
-				<div class="span3"><h4>Apple specs</h4></div>
+				<div class="span3"><h4>Platforms</h4></div>
+				<div class="span9">
+					<label class="checkbox inline" for="iphone">
+					  <input type="checkbox" name="platforms[]" value="iphone" checked="checked" id="iphone"> iPhone
+					</label>
+					<label class="checkbox inline" for="ipad">
+					  <input type="checkbox" name="platforms[]" value="ipad" checked="checked" id="ipad"> iPad
+					</label>
+					<label class="checkbox inline" for="android">
+					  <input type="checkbox" name="platforms[]" value="android" checked="checked" id="android"> Android
+					</label>
+					<label class="checkbox inline" for="mobileweb">
+					  <input type="checkbox" name="platforms[]" value="mobileweb" id="mobileweb"> Mobile Web
+					</label>
+					<label class="checkbox inline" for="blackberry">
+					  <input type="checkbox" name="platforms[]" value="blackberry" id="blackberry"> BlackBerry
+					</label>
+					<label class="checkbox inline" for="tizen">
+					  <input type="checkbox" name="platforms[]" value="tizen" id="tizen"> Tizen
+					</label>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span3"><h4>Fix</h4></div>
 				<div class="span9">
 					<label class="checkbox" for="apple">
-					  <input type="checkbox" name="apple" value="1" id="apple"> Conforms to <a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/App-RelatedResources/App-RelatedResources.html" target="_blank">Apple's specs for launch images</a> rather then Appcelerator's. This fixes the splash-shift caused by differences in iPad and iPhone 4 portrait dimensions.
+					  <input type="checkbox" name="apple" value="1" checked="checked" id="apple"> Conforms to <a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/App-RelatedResources/App-RelatedResources.html" target="_blank">Apple's specs for launch images</a> rather then Appcelerator's. This fixes the splash-shift caused by differences in iPad and iPhone 4 portrait dimensions.
 					</label>
 				</div>
 			</div>
@@ -370,7 +424,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<div class="span3"><h4>Alloy</h4></div>
 				<div class="span9">
 					<label class="checkbox" for="alloy">
-					  <input type="checkbox" name="alloy" value="1" id="alloy"> Writes to <code>app/assets</code> instead of <code>Resources</code>.
+					  <input type="checkbox" name="alloy" value="1" checked="checked" id="alloy"> Writes to <code>app/assets</code> instead of <code>Resources</code>.
 					</label>
 				</div>
 			</div>

@@ -10,7 +10,6 @@ I hope to extend TiCons with the following features:
 * Generate HTML splash screen based on icon and background color.
 * Generate Android nine-patch splash screen based on icon and background color or texture.
 * Provide a PSD containing guides for optimal splash screen cropping-pleasure.
-* Let the use select which platforms and formfactors to generate assets for.
 
 Feel free to [mail](mail@fokkezb.nl) me or fork the code and send a pull-request.
 
