@@ -47,6 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$zip_path		= dirname(__FILE__) . '/zip/' . $uniqid . '.zip';
 			$zip_url 		= '/zip/' . $uniqid . '.zip';
 		
+			$compress = array();
+		
 			define('ICON_PATH', 0);
 			define('ICON_SIZE', 1);
 			define('ICON_DPI', 2);
@@ -84,7 +86,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				}
 				
 				foreach ($sizes as $size) {
-					$dir = dirname($tmp_path . $size[ICON_PATH]);
+					$file = $tmp_path . $size[ICON_PATH];
+					$dir = dirname($file);
+					
+					$compress[] = $file;
 				
 					if (is_dir($dir) == false) {
 						mkdir($dir, 0777, true);
@@ -96,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$image->setImageFormat('png');
 					$image->cropThumbnailImage($size[ICON_SIZE], $size[ICON_SIZE]);
 					$image->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
-					$image->writeImage($tmp_path . $size[ICON_PATH]);
+					$image->writeImage($file);
 				}
 			}
 
@@ -131,7 +136,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				}
 		
 				foreach ($sizes as $size) {
-					$dir = dirname($tmp_path . $size[ICON_PATH]);
+					$file = $tmp_path . $size[ICON_PATH];
+					$dir = dirname($file);
+					
+					$compress[] = $file;
 				
 					if (is_dir($dir) == false) {
 						mkdir($dir, 0777, true);
@@ -143,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$image->setImageFormat('png');
 					$image->cropThumbnailImage($size[ICON_SIZE], $size[ICON_SIZE]);
 					$image->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
-					$image->writeImage($tmp_path . $size[ICON_PATH]);
+					$image->writeImage($file);
 				}
 			}
 		
@@ -199,8 +207,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				}
 		
 				foreach ($sizes as $size) {
-					$dir = dirname($tmp_path . $size[SPLASH_PATH]);
-				
+					$file = $tmp_path . $size[ICON_PATH];
+					$dir = dirname($file);
+					
 					if (is_dir($dir) == false) {
 						mkdir($dir, 0777, true);
 					}
@@ -213,12 +222,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$image->stripImage();
 				
 					if ($ext == 'jpg') {
+					
+						switch ($_POST['compression']) {
+							case 'low': $cq = 80; break;
+							case 'medium': $cq = 65; break;
+							case 'high': $cq = 50; break;
+							default: $cq = 100; break;
+						}
+					
 						$image->setImageFormat('jpeg');
 						$image->setImageCompression(Imagick::COMPRESSION_JPEG);
-						$image->setImageCompressionQuality(100);						
+						$image->setImageCompressionQuality($cq);				
 				
 					} else {
 						$image->setImageFormat('png');
+						
+						$compress[] = $file;
 					}
 					
 					if (isset($size[SPLASH_ROTATE])) {
@@ -227,8 +246,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				
 					$image->cropThumbnailImage($size[SPLASH_WIDTH], $size[SPLASH_HEIGHT]);
 					$image->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
-					$image->writeImage($tmp_path . $size[SPLASH_PATH]);
+					$image->writeImage($file);
 				}
+			}
+			
+			if ($_POST['compression'] && count($compress) > 0) {
+			
+				switch ($_POST['compression']) {
+					case 'low': $o = 1; break;
+					case 'medium': $cq = 2; break;
+					case 'high': $cq = 3; break;
+				}
+
+				shell_exec('optipng -v -o ' . $o . ' "' . implode('" "', $compress) . '"');
 			}
 		
 			exec('(cd ' . $tmp_path . ' && zip -r -9 ' . $zip_path . ' ./)');
@@ -249,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			@unlink($_FILES['splash']['tmp_name']);
 		}
 		
-		shell_exec('find ' . dirname(__FILE__) . '/zip/ -type f -name "*.zip" -mindepth 1 -maxdepth 1 -mmin +60 -exec rm {} \;');
+		exec('find ' . dirname(__FILE__) . '/zip/ -type f -name "*.zip" -mindepth 1 -maxdepth 1 -mmin +60 -exec rm {} \;');
 		
 		if ($download) {
 			header('Location: ' . $zip_url);
@@ -388,6 +418,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<input type="text" name="language" class="input-mini" placeholder="e.g.: 'nl'" />
 				</div>
 				<div class="span5">Specify a <a href="http://en.wikipedia.org/wiki/ISO_639-1" target="_blank">ISO 639-1</a> language code to write iOS and Android splash screens to <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-LocalizedSplashScreens" target="_blank">localized paths</a>. You would need to run TiCons for every required language and then merge the resulting asset folders.</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span3"><h4>Compression</h4></div>
+				<div class="span4">
+					<select name="compression">
+						<option value="">(none)</option>
+						<option value="low">Low</option>
+						<option value="medium">Medium</option>
+						<option value="high">High</option>
+					</select>
+				</div>
+				<div class="span5">Applies an increasing level for <a href="http://optipng.sourceforge.net/">OptiPNG</a> compression resulting in 10% to 30% reduction on all PNG's and set a compression quality percentage ranging from 80% to 50% on JPEG's.</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span3"><h4>Platforms</h4></div>
