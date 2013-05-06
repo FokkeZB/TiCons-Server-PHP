@@ -425,7 +425,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<select name="compression">
 						<option value="">(none)</option>
 						<option value="low">Low</option>
-						<option value="medium">Medium</option>
+						<option selected="selected" value="medium">Medium</option>
 						<option value="high">High</option>
 					</select>
 				</div>
