@@ -2,7 +2,7 @@
 Generate a ZIP with all (iOS, Android, Mobile Web, Tizen, BlackBerry) Titanium [icons & splash screens](http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens) from just 2 or 3 files.
 
 ## Website
-Use TiCons online at: [http://ticons.fokkezb.nl/](http://ticons.fokkezb.nl/)
+Use TiCons online at: [http://ticons.fokkezb.nl/](http://ticons.fokkezb.nl/) (updated automagically)
 
 ## Roadmap
 I hope to extend TiCons with the following features:
