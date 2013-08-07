@@ -66,23 +66,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				
 				// iPhone & iPad
 				if (in_array('iphone', $_POST['platforms']) || in_array('ipad', $_POST['platforms'])) {
-					$sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small@2x.png', 58, 72);
+				
+				  // iTunes Connect
 					$sizes[] = array('/iTunesConnect/icon.png', 1024, 72);
+					
+					// iTunes Artwork
 					$sizes[] = array('/project' . $assets_path . '/iphone/iTunesArtwork', 512, 72);
+					$sizes[] = array('/project' . $assets_path . '/iphone/iTunesArtwork@2x', 1024, 72);
+					
+					// Spotlight & Settings
+					$sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small@2x.png', 58, 72);
+					
+					// iOS7
+					if ($_POST['ios7']) {
+					
+            // App
+            $sizes[] = array('/project' . $assets_path . '/iphone/appicon-60.png', 60, 72);
+            $sizes[] = array('/project' . $assets_path . '/iphone/appicon-60@2x.png', 120, 72);
+          
+            // Spotlight & Settings
+            $sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small-40.png', 40, 72);
+            $sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small-40@2x.png', 80, 72);
+          }
 				
 					// iPhone
 					if (in_array('iphone', $_POST['platforms'])) {
+					
+					  // App
 						$sizes[] = array('/project' . $assets_path . '/iphone/appicon.png', 57, 72);
 						$sizes[] = array('/project' . $assets_path . '/iphone/appicon@2x.png', 114, 72);
+						
+						// Spotlight && Settings
 						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small.png', 29, 72);
 					}
 				
 					// iPad
 					if (in_array('ipad', $_POST['platforms'])) {
+					
+					  // App
 						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-72.png', 72, 72);
 						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-72@2x.png', 144, 72);
+						
+						// Spotlight && Settings
 						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small-50.png', 50, 72);
 						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-Small-50@2x.png', 100, 72);
+						
+					  // iOS7
+					  if ($_POST['ios7']) {
+					  
+					    // App
+						  $sizes[] = array('/project' . $assets_path . '/iphone/appicon-76.png', 76, 72);
+  						$sizes[] = array('/project' . $assets_path . '/iphone/appicon-76@2x.png', 152, 72);
+  					}
 					}
 				}
 				
@@ -477,6 +512,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				</div>
 			</div>
 			<div class="row-fluid">
+				<div class="span3"><h4>iOS7</h4></div>
+				<div class="span9">
+					<label class="checkbox" for="ios7">
+					  <input type="checkbox" name="ios7" value="1" checked="checked" id="ios7"> Generates additional icons for iOS7 (see <a href="https://developer.apple.com/library/prerelease/ios/documentation/UserExperience/Conceptual/MobileHIG/AppIcons.html#//apple_ref/doc/uid/TP40006556-CH19-SW1" target="_blank">Apple</a> and <a href="https://jira.appcelerator.org/browse/TIMOB-14608" target="_blank">Titanium</a>).
+					</label>
+				</div>
+			</div>
+			<div class="row-fluid">
 				<div class="span3"><h4>Fix</h4></div>
 				<div class="span9">
 					<label class="checkbox" for="apple">
@@ -507,6 +550,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       
         <div class="span6">
         
+        	<h4>iOS7</h4>
+        	<p>Though not fully implemented by Titanium, TiCons already generates iOS7 icons.</p>
+        	
         	<h4>App stores</h4>
         	<p>TiCons also generates iTunes Connect and Google Play assets for you.</p>
 
