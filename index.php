@@ -81,11 +81,13 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small-40.png', 40, 72 );
 					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small-40@2x.png', 80, 72 );
 
+					// App (default)
+					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon.png', 57, 72 );
+
 					// iPhone
 					if ( in_array( 'iphone', $_POST['platforms'] ) ) {
 
 						// App
-						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon.png', 57, 72 );
 						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon@2x.png', 114, 72 );
 
 						// Spotlight && Settings
