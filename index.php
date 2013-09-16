@@ -85,11 +85,13 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small-40.png', 40, 72 );
 					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small-40@2x.png', 80, 72 );
 
+					// App (default)
+					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon.png', 57, 72 );
+
 					// iPhone
 					if ( in_array( 'iphone', $_POST['platforms'] ) ) {
 
 						// App
-						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon.png', 57, 72 );
 						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon@2x.png', 114, 72 );
 
 						// Spotlight && Settings
@@ -132,6 +134,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$image->readImage( $_FILES['icon']['tmp_name'] );
 					$image->setImageFormat( 'png' );
 					$image->cropThumbnailImage( $size[ICON_SIZE], $size[ICON_SIZE] );
+					$image->setImageResolution( $size[ICON_DPI], $size[ICON_DPI] );
 					$image->setImageUnits( imagick::RESOLUTION_PIXELSPERINCH );
 					$image->writeImage( $file );
 				}
@@ -182,6 +185,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$image->readImage( $FILE['tmp_name'] );
 					$image->setImageFormat( 'png' );
 					$image->cropThumbnailImage( $size[ICON_SIZE], $size[ICON_SIZE] );
+					$image->setImageResolution( $size[ICON_DPI], $size[ICON_DPI] );
 					$image->setImageUnits( imagick::RESOLUTION_PIXELSPERINCH );
 					$image->writeImage( $file );
 				}
@@ -289,6 +293,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					}
 
 					$image->cropThumbnailImage( $size[SPLASH_WIDTH], $size[SPLASH_HEIGHT] );
+					$image->setImageResolution( $size[SPLASH_DPI], $size[SPLASH_DPI] );
 					$image->setImageUnits( imagick::RESOLUTION_PIXELSPERINCH );
 					$image->writeImage( $file );
 				}
