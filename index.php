@@ -41,6 +41,10 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			throw new Exception( 'Select at least one platform.' );
 		}
 
+		if ( $_FILES['splash']['error'] == 0 && is_array( $_POST['orientations'] ) == false || count( $_POST['orientations'] ) == 0 ) {
+			throw new Exception( 'Select at least one orientation.' );
+		}
+
 		if ( $_FILES['icon']['error'] == 0 || $_FILES['icon-transparent']['error'] == 0 || $_FILES['splash']['error'] == 0 ) {
 			$uniqid   = uniqid();
 			$assets_path = $_POST['alloy'] ? '/app/assets' : '/Resources';
@@ -238,7 +242,15 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$sizes[] = array( '/project' . $assets_path . '/blackberry/splash-600x1024.png', 600, 1024, 72 );
 				}
 
+				$portrait = in_array( 'portrait', $_POST['orientations'] );
+				$landscape = in_array( 'landscape', $_POST['orientations'] );
+
 				foreach ( $sizes as $size ) {
+
+					if ( ( !$portrait && $size[SPLASH_WIDTH] < $size[SPLASH_HEIGHT] ) || ( !$landscape && $size[SPLASH_WIDTH] > $size[SPLASH_HEIGHT] ) ) {
+						continue;
+					}
+
 					$file = $tmp_path . $size[ICON_PATH];
 					$dir = dirname( $file );
 
@@ -500,6 +512,17 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					</label>
 					<label class="checkbox inline" for="tizen">
 					  <input type="checkbox" name="platforms[]" value="tizen" id="tizen"> Tizen
+					</label>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span3"><h4>Orientations</h4></div>
+				<div class="span9">
+					<label class="checkbox inline" for="portrait">
+					  <input type="checkbox" name="orientations[]" value="portrait" checked="checked" id="portrait"> Portrait
+					</label>
+					<label class="checkbox inline" for="landscape">
+					  <input type="checkbox" name="orientations[]" value="landscape" checked="checked" id="landscape"> Landscape
 					</label>
 				</div>
 			</div>
