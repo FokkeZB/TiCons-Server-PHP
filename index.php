@@ -206,10 +206,10 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 				// iPad
 				if ( in_array( 'ipad', $_POST['platforms'] ) ) {
-					$sizes[] = array( $ios_path . '/Default-Landscape.png', 1024, 748, 72 );
-					$sizes[] = array( $ios_path . '/Default-Portrait.png', 768, $_POST['apple'] ? 1004 : 1044, 72 );
-					$sizes[] = array( $ios_path . '/Default-Landscape@2x.png', 2048, 1496, 72 );
-					$sizes[] = array( $ios_path . '/Default-Portrait@2x.png', 1536, 2008, 72 );
+					$sizes[] = array( $ios_path . '/Default-Landscape.png', 1024, $_POST['apple'] ? 768 : 748, 72 );
+					$sizes[] = array( $ios_path . '/Default-Portrait.png', 768, $_POST['apple'] ? 1024 : 1044, 72 );
+					$sizes[] = array( $ios_path . '/Default-Landscape@2x.png', 2048, $_POST['apple'] ? 1536 : 1496, 72 );
+					$sizes[] = array( $ios_path . '/Default-Portrait@2x.png', 1536, $_POST['apple'] ? 2048 : 2008, 72 );
 				}
 
 				// Android
