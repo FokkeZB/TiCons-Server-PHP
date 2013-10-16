@@ -147,18 +147,19 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			}
 
 			if ( $_FILES['icon']['error'] == 0 || $_FILES['icon-transparent']['error'] == 0 ) {
-				$FILE = ( $_FILES['icon-transparent']['error'] == 0 ) ? $_FILES['icon-transparent'] : $_FILES['icon'];
+				$hasIconTrans = ( $_FILES['icon-transparent']['error'] == 0 );
+				$FILE = $hasIconTrans ? $_FILES['icon-transparent'] : $_FILES['icon'];
 
 				$sizes = array();
 
 				// Android
 				if ( in_array( 'android', $_POST['platforms'] ) ) {
-					$sizes[] = array( '/project' . $assets_path . '/android/appicon.png', 128, 72, true);
-					$sizes[] = array( '/project/platform/android/res/drawable-ldpi/appicon.png', 36, 120, true );
-					$sizes[] = array( '/project/platform/android/res/drawable-mdpi/appicon.png', 48, 160, true );
-					$sizes[] = array( '/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240, true );
-					$sizes[] = array( '/project/platform/android/res/drawable-xhdpi/appicon.png', 96, 320, true );
-					$sizes[] = array( '/GooglePlay/icon.png', 512, 72 );
+					$sizes[] = array( '/project' . $assets_path . '/android/appicon.png', 128, 72, !$hasIconTrans );
+					$sizes[] = array( '/project/platform/android/res/drawable-ldpi/appicon.png', 36, 120, !$hasIconTrans );
+					$sizes[] = array( '/project/platform/android/res/drawable-mdpi/appicon.png', 48, 160, !$hasIconTrans );
+					$sizes[] = array( '/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240, !$hasIconTrans );
+					$sizes[] = array( '/project/platform/android/res/drawable-xhdpi/appicon.png', 96, 320, !$hasIconTrans );
+					$sizes[] = array( '/GooglePlay/icon.png', 512, 72, !$hasIconTrans );
 				}
 
 				// Mobile Web
@@ -491,6 +492,13 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				<div class="span5">Splash screens come in all sorts of sizes and because they're not squarish, we need to crop. For this to work, you should select a 2048x2048 PNG where the logo or other important artwork is placed within the center 500x500 pixels.</div>
 			</div>
 			<div class="row-fluid">
+				<div class="span3"><h4>Border radius</h4></div>
+				<div class="span4">
+					<input type="text" name="radius" class="input-mini" placeholder="e.g.: '10'" />
+				</div>
+				<div class="span5">Specify a percentage between 0 and 50 for a border radius to apply to the default icon for Android.</div>
+			</div>
+			<div class="row-fluid">
 				<div class="span3"><h4>Language</h4></div>
 				<div class="span4">
 					<input type="text" name="language" class="input-mini" placeholder="e.g.: 'nl'" />
@@ -550,13 +558,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					  <input type="checkbox" name="apple" value="1" checked="checked" id="apple"> Conforms to <a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/App-RelatedResources/App-RelatedResources.html" target="_blank">Apple's specs for launch images</a> rather then Appcelerator's. This fixes the splash-shift caused by differences in iPad and iPhone 4 portrait dimensions.
 					</label>
 				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="span3"><h4>Border radius</h4></div>
-				<div class="span4">
-					<input type="text" name="radius" class="input-mini" placeholder="e.g.: '10'" />
-				</div>
-				<div class="span5">Specify a percentage between 0 and 50 for a border radius to apply to the icons for Android.</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span3"><h4>Alloy</h4></div>
