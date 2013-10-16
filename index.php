@@ -16,6 +16,7 @@ set_time_limit( 0 );
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 	try {
+		$radius = (int) $_POST['radius'];
 
 		if ( $_FILES['icon']['error'] != 0 && $_FILES['icon']['error'] != 4 ) {
 			throw new Exception( $messages[$_FILES['icon']['error']] );
@@ -36,6 +37,10 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		if ( $_POST['language'] && !preg_match( '/^[a-z]{2}$/', $_POST['language'] ) ) {
 			throw new Exception( 'Invalid ISO 639-1 language code.' );
 		}
+		
+		if ( $radius < 0 || $radius > 50 ) {
+			throw new Exception( 'Border radius should be between 0 and 50.' );
+		}
 
 		if ( is_array( $_POST['platforms'] ) == false || count( $_POST['platforms'] ) == 0 ) {
 			throw new Exception( 'Select at least one platform.' );
@@ -46,17 +51,18 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		}
 
 		if ( $_FILES['icon']['error'] == 0 || $_FILES['icon-transparent']['error'] == 0 || $_FILES['splash']['error'] == 0 ) {
-			$uniqid   = uniqid();
+			$uniqid = uniqid();
 			$assets_path = $_POST['alloy'] ? '/app/assets' : '/Resources';
-			$tmp_path   = dirname( __FILE__ ) . '/tmp/' . $uniqid;
-			$zip_path  = dirname( __FILE__ ) . '/zip/' . $uniqid . '.zip';
-			$zip_url   = '/zip/' . $uniqid . '.zip';
+			$tmp_path = dirname( __FILE__ ) . '/tmp/' . $uniqid;
+			$zip_path = dirname( __FILE__ ) . '/zip/' . $uniqid . '.zip';
+			$zip_url = '/zip/' . $uniqid . '.zip';
 
 			$compress = array();
 
 			define( 'ICON_PATH', 0 );
 			define( 'ICON_SIZE', 1 );
 			define( 'ICON_DPI', 2 );
+			define( 'ICON_RADIUS', 3 );
 
 			define( 'SPLASH_PATH', 0 );
 			define( 'SPLASH_WIDTH', 1 );
@@ -147,11 +153,11 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 				// Android
 				if ( in_array( 'android', $_POST['platforms'] ) ) {
-					$sizes[] = array( '/project' . $assets_path . '/android/appicon.png', 128, 72 );
-					$sizes[] = array( '/project/platform/android/res/drawable-ldpi/appicon.png', 36, 120 );
-					$sizes[] = array( '/project/platform/android/res/drawable-mdpi/appicon.png', 48, 160 );
-					$sizes[] = array( '/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240 );
-					$sizes[] = array( '/project/platform/android/res/drawable-xhdpi/appicon.png', 96, 320 );
+					$sizes[] = array( '/project' . $assets_path . '/android/appicon.png', 128, 72, true);
+					$sizes[] = array( '/project/platform/android/res/drawable-ldpi/appicon.png', 36, 120, true );
+					$sizes[] = array( '/project/platform/android/res/drawable-mdpi/appicon.png', 48, 160, true );
+					$sizes[] = array( '/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240, true );
+					$sizes[] = array( '/project/platform/android/res/drawable-xhdpi/appicon.png', 96, 320, true );
 					$sizes[] = array( '/GooglePlay/icon.png', 512, 72 );
 				}
 
@@ -185,6 +191,12 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$image->readImage( $FILE['tmp_name'] );
 					$image->setImageFormat( 'png' );
 					$image->cropThumbnailImage( $size[ICON_SIZE], $size[ICON_SIZE] );
+					
+					if ( $size[ICON_RADIUS] && $radius > 0) {
+						$px = round(($size[ICON_SIZE] / 100) * $radius);
+						$image->roundCorners($px, $px);
+					}
+					
 					$image->setImageResolution( $size[ICON_DPI], $size[ICON_DPI] );
 					$image->setImageUnits( imagick::RESOLUTION_PIXELSPERINCH );
 					$image->writeImage( $file );
@@ -538,6 +550,13 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					  <input type="checkbox" name="apple" value="1" checked="checked" id="apple"> Conforms to <a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/App-RelatedResources/App-RelatedResources.html" target="_blank">Apple's specs for launch images</a> rather then Appcelerator's. This fixes the splash-shift caused by differences in iPad and iPhone 4 portrait dimensions.
 					</label>
 				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span3"><h4>Border radius</h4></div>
+				<div class="span4">
+					<input type="text" name="radius" class="input-mini" placeholder="e.g.: '10'" />
+				</div>
+				<div class="span5">Specify a percentage between 0 and 50 for a border radius to apply to the icons for Android.</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span3"><h4>Alloy</h4></div>
