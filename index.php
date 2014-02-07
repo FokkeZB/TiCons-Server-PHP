@@ -556,7 +556,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				<div class="span3"><h4>Fix</h4></div>
 				<div class="span9">
 					<label class="checkbox" for="apple">
-					  <input type="checkbox" name="apple" value="1" checked="checked" id="apple"> Conforms to <a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/App-RelatedResources/App-RelatedResources.html" target="_blank">Apple's specs for launch images</a> rather then Appcelerator's. This fixes the splash-shift caused by differences in iPad and iPhone 4 portrait dimensions.
+					  <input type="checkbox" name="apple" value="1" checked="checked" id="apple"> Conforms to <a href="http://developer.apple.com/library/ios/#documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/App-RelatedResources/App-RelatedResources.html" target="_blank">Apple's specs for launch images</a> rather than Appcelerator's. This fixes the splash-shift caused by differences in iPad and iPhone 4 portrait dimensions.
 					</label>
 				</div>
 			</div>
