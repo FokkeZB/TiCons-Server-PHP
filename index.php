@@ -159,7 +159,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$sizes[] = array( '/project/platform/android/res/drawable-mdpi/appicon.png', 48, 160, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-xhdpi/appicon.png', 96, 320, !$hasIconTrans );
-					$sizes[] = array( '/project/platform/android/res/drawable-xxhdpi/appicon.png', 144, 320, !$hasIconTrans );
+					$sizes[] = array( '/project/platform/android/res/drawable-xxhdpi/appicon.png', 144, 480, !$hasIconTrans );
 					$sizes[] = array( '/GooglePlay/icon.png', 512, 72, !$hasIconTrans );
 				}
 
@@ -430,6 +430,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
       <div class="masthead">
         <ul class="nav nav-pills pull-right">
           <li><a href="#about">About</a></li>
+          <li><a href="https://www.npmjs.org/package/ticons" target="_blank">CLI & Module</a></li>
           <li><a href="https://github.com/FokkeZB/TiCons" target="_blank">Fork on GitHub</a></li>
           <li><a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens" target="_blank">Titanium Docs</a></li>
         </ul>
@@ -589,21 +590,24 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
         	<h4>App stores</h4>
         	<p>TiCons also generates iTunes Connect and Google Play assets for you.</p>
 
-            <h4>BlackBerry & Tizen</h4>
-            <p>TiCons will generate a Tizen icon and both icon and splash for BlackBerry 10.</p>
+          <h4>BlackBerry & Tizen</h4>
+          <p>TiCons will generate a Tizen icon and both icon and splash for BlackBerry 10.</p>
 
-			<h4>Filters</h4>
-			<p>TiCons does not apply any filters. iOS automatically adds rounded corners and a drop shadow. By default, it also adds a reflective shine. You can disable this in your <code><a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-Pre-renderediconsoniOS" target="_blank">tiapp.xml</a></code>.</p>
+					<h4>Filters</h4>
+					<p>TiCons does not apply any filters. iOS automatically adds rounded corners and a drop shadow. By default, it also adds a reflective shine. You can disable this in your <code><a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-Pre-renderediconsoniOS" target="_blank">tiapp.xml</a></code>.</p>
 
         </div>
 
         <div class="span6">
 
-			<h4>Android nine-patch splash</h4>
-			<p>To better support the many differend Android display sizes and densities, you could <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-Splashscreens" target="_blank">use a nine-patch image for your splash screen</a>. This is not supported by TiCons right now.</p>
+					<h4>Android nine-patch splash</h4>
+					<p>To better support the many differend Android display sizes and densities, you could <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-Splashscreens" target="_blank">use a nine-patch image for your splash screen</a>. This is not supported by TiCons right now.</p>
 
           <h4>Mobile Web</h4>
           <p>There is partial support for <a href="http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens-section-29004897_IconsandSplashScreens-MobileWebgraphicassetrequirementsandoptions" target="_blank">Mobile Web</a>. HTML splash screens are currently not generated.</p>
+
+          <h4>CLI & Module</h4>
+          <p>A CLI & CommonJS module is under development and <a href="https://www.npmjs.org/package/ticons" target="_blank">available through NPM</a>.</p>
 
           <h4>Contribute</h4>
           <p>Feel free to contact me at <a href="mailto:mail@fokkezb.nl">mail@fokkezb.nl</a> or <a href="https://github.com/FokkeZB/TiCons" target="_blank">fork</a> the code and send a pull request.<p>
