@@ -156,7 +156,8 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				if ( in_array( 'android', $_POST['platforms'] ) ) {
 					$sizes[] = array( '/project' . $assets_path . '/android/appicon.png', 128, 72, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-ldpi/appicon.png', 36, 120, !$hasIconTrans );
-					$sizes[] = array( '/project/platform/android/res/drawable-mdpi/appicon.png', 48, 160, !$hasIconTrans );
+					$sizes[] = array( '/project/platform/android/res/drawable-mdpi/appicon.png', 48
+					, 160, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-xhdpi/appicon.png', 96, 320, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-xxhdpi/appicon.png', 144, 480, !$hasIconTrans );
@@ -175,7 +176,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 				// BlackBerry
 				if ( in_array( 'blackberry', $_POST['platforms'] ) ) {
-					$sizes[] = array( '/project' . $assets_path . '/blackberry/appicon.png', 86, 72 );
+					$sizes[] = array( '/project' . $assets_path . '/blackberry/appicon.png', 114, 72 );
 				}
 
 				foreach ( $sizes as $size ) {
@@ -257,7 +258,12 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 				// BlackBerry
 				if ( in_array( 'blackberry', $_POST['platforms'] ) ) {
-					$sizes[] = array( '/project' . $assets_path . '/blackberry/splash-600x1024.png', 600, 1024, 72 );
+					// same name, only fix size
+					$sizes[] = array( '/project' . $assets_path . '/blackberry/splash-600x1024.png', 768, 1280, 72 );
+					// Q10 / Q5 support
+					$sizes[] = array( '/project' . $assets_path . '/blackberry/splash-720x720.png', 720, 720, 72 );
+					// maybe Appc rename it in the futuer
+					//$sizes[] = array( '/project' . $assets_path . '/blackberry/splash-768x1280.png', 768, 1280, 72 );
 				}
 
 				$portrait = in_array( 'portrait', $_POST['orientations'] );
