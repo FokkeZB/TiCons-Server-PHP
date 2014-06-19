@@ -461,7 +461,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				<div class="span3"><h4>Default icon</h4></div>
 				<div class="span4">
 					<div class="fileupload fileupload-new" data-provides="fileupload">
-					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://dummyimage.com/100x100/eeeeee/333333.png&text=%201024x1024%20" /></div>
+					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://placehold.it/100x100&text=%201024x1024%20" /></div>
 					  <div class="fileupload-preview fileupload-exists thumbnail" style="width: 100px; height: 100px;"></div>
 					  <div>
 						<span class="btn btn-file"><span class="fileupload-new">Select</span><span class="fileupload-exists">Replace</span><input type="file" name="icon" accept="image/png" /></span>
@@ -475,7 +475,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				<div class="span3"><h4>Transparent icon</h4></div>
 				<div class="span4">
 					<div class="fileupload fileupload-new" data-provides="fileupload">
-					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://dummyimage.com/100x100/eeeeee/333333.png&text=%20%20512x512%20%20" /></div>
+					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://placehold.it/100x100&text=%20%20512x512%20%20" /></div>
 					  <div class="fileupload-preview fileupload-exists thumbnail" style="width: 100px; height: 100px;"></div>
 					  <div>
 						<span class="btn btn-file"><span class="fileupload-new">Select</span><span class="fileupload-exists">Replace</span><input type="file" name="icon-transparent" /></span>
@@ -489,7 +489,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				<div class="span3"><h4>Splash</h4></div>
 				<div class="span4">
 					<div class="fileupload fileupload-new" data-provides="fileupload">
-					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://dummyimage.com/100x100/eeeeee/333333.png&text=%202048x2048%20" /></div>
+					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://placehold.it/100x100&text=%202048x2048%20" /></div>
 					  <div class="fileupload-preview fileupload-exists thumbnail" style="width: 100px; height: 100px;"></div>
 					  <div>
 						<span class="btn btn-file"><span class="fileupload-new">Select</span><span class="fileupload-exists">Replace</span><input type="file" name="splash" /></span>
