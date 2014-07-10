@@ -161,6 +161,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$sizes[] = array( '/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-xhdpi/appicon.png', 96, 320, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-xxhdpi/appicon.png', 144, 480, !$hasIconTrans );
+					$sizes[] = array( '/project/platform/android/res/drawable-xxhdpi/appicon.png', 192, 640, !$hasIconTrans );
 					$sizes[] = array( '/GooglePlay/icon.png', 512, 72, !$hasIconTrans );
 				}
 
@@ -230,16 +231,26 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				// Android
 				if ( in_array( 'android', $_POST['platforms'] ) ) {
 					$sizes[] = array( '/project' . $assets_path . '/android/default.png', 320, 480, 72 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-xxxhdpi/default.png', 1920, 1280, 640 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-xxhdpi/default.png', 1600, 960, 480 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-xhdpi/default.png', 960, 640, 320 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-hdpi/default.png', 800, 480, 240 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-mdpi/default.png', 480, 320, 160 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-land-ldpi/default.png', 400, 240, 120 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-xxxhdpi/default.png', 1280, 1920, 640 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-xxhdpi/default.png', 960, 1600, 480 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-xhdpi/default.png', 640, 960, 320 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-hdpi/default.png', 480, 800, 240 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-mdpi/default.png', 320, 480, 160 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'long-port-ldpi/default.png', 240, 400, 120 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-xxxhdpi/default.png', 1920, 1280, 640 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-xxhdpi/default.png', 1600, 960, 480 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-xhdpi/default.png', 960, 640, 320 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-hdpi/default.png', 800, 480, 240 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-mdpi/default.png', 480, 320, 160 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-land-ldpi/default.png', 320, 240, 120 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-xxxhdpi/default.png', 1280, 1920, 320 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-xxhdpi/default.png', 960, 1600, 320 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-xhdpi/default.png', 640, 960, 320 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-hdpi/default.png', 480, 800, 240 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-mdpi/default.png', 320, 480, 160 );
