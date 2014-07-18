@@ -1,6 +1,10 @@
 <?php
 
-$analytics = 'UA-36046051-3';
+$analytics = '';
+
+//NB: don't use version 1.0 of pngquant. There is a massive difference in quality and compression between recent versions and the obsolete version that can still is shipped in some Linux distributions. Use pngquant -v to check.
+$pngquant_path = '/tnx/www/html/www/indi/INDI_ver1.1/_lib/pngquant/pngquant/pngquant';
+
 $messages = array(
 	1 => "The uploaded file exceeds the system maximum",
 	2 => "The uploaded file exceeds the form maximum",
@@ -51,11 +55,11 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		}
 
 		if ( $_FILES['icon']['error'] == 0 || $_FILES['icon-transparent']['error'] == 0 || $_FILES['splash']['error'] == 0 ) {
-			$uniqid = uniqid();
+			$uniqid = uniqid()."-".$_POST['compression'];
 			$assets_path = $_POST['alloy'] ? '/app/assets' : '/Resources';
 			$tmp_path = dirname( __FILE__ ) . '/tmp/' . $uniqid;
 			$zip_path = dirname( __FILE__ ) . '/zip/' . $uniqid . '.zip';
-			$zip_url = '/zip/' . $uniqid . '.zip';
+			$zip_url = 'zip/' . $uniqid . '.zip';
 
 			$compress = array();
 
@@ -156,12 +160,11 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				if ( in_array( 'android', $_POST['platforms'] ) ) {
 					$sizes[] = array( '/project' . $assets_path . '/android/appicon.png', 128, 72, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-ldpi/appicon.png', 36, 120, !$hasIconTrans );
-					$sizes[] = array( '/project/platform/android/res/drawable-mdpi/appicon.png', 48
-					, 160, !$hasIconTrans );
+					$sizes[] = array( '/project/platform/android/res/drawable-mdpi/appicon.png', 48, 160, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-hdpi/appicon.png', 72, 240, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-xhdpi/appicon.png', 96, 320, !$hasIconTrans );
 					$sizes[] = array( '/project/platform/android/res/drawable-xxhdpi/appicon.png', 144, 480, !$hasIconTrans );
-					$sizes[] = array( '/project/platform/android/res/drawable-xxhdpi/appicon.png', 192, 640, !$hasIconTrans );
+					$sizes[] = array( '/project/platform/android/res/drawable-xxxhdpi/appicon.png', 192, 640, !$hasIconTrans );
 					$sizes[] = array( '/GooglePlay/icon.png', 512, 72, !$hasIconTrans );
 				}
 
@@ -255,6 +258,18 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-hdpi/default.png', 480, 800, 240 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-mdpi/default.png', 320, 480, 160 );
 					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'notlong-port-ldpi/default.png', 240, 320, 120 );
+					
+					$sizes[] = array( '/GooglePlay/banner.png', 1024, 500, 72);
+					$sizes[] = array( '/GooglePlay/promo.png', 180, 120, 72);
+				}
+				
+				if ( in_array( 'androidtablet', $_POST['platforms'] ) ) {
+					//aggiunti c3k per tablet
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'xlarge-long-land/default.png', 960, 640, 320 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'xlarge-long-port/default.png', 640, 960, 320 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'xlarge-notlong-land/default.png', 960, 640, 320 );
+					$sizes[] = array( '/project' . $assets_path . '/android/images/res-' . $android_prefix . 'xlarge-notlong-port/default.png', 640, 960, 320 );
+					//FINE aggiunti c3k per tablet
 				}
 
 				// Mobile Web
@@ -331,19 +346,43 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			}
 
 			if ( $_POST['compression'] && count( $compress ) > 0 ) {
-
+				
 				switch ( $_POST['compression'] ) {
-				case 'low': $o = 1; break;
-				case 'medium': $cq = 2; break;
-				case 'high': $cq = 3; break;
+					case 'optipng-low':
+						$bin = 'optipng';
+						$o = 1; 
+						break;
+					case 'optipng-medium':
+						$bin = 'optipng';
+						$o = 2;
+						break;
+					case 'optipng-high':
+						$bin = 'optipng';
+						$o = 3; 
+						break;
+					case 'pngquant-low':
+						$bin = 'pngquant';
+						$o = 256; 
+						break;
+					case 'pngquant-medium':
+						$bin = 'pngquant';
+						$o = 128;
+						break;
+					case 'pngquant-high':
+						$bin = 'pngquant';
+						$o = 64; 
+						break;
 				}
-
-				shell_exec( 'optipng -v -o ' . $o . ' "' . implode( '" "', $compress ) . '"' );
+				
+				if($bin == 'optipng') $command = 'optipng -v -o ' . $o . ' "' . implode( '" "', $compress ) . '"';
+				else if($bin == 'pngquant') $command = $pngquant_path.' --ext ".png" -f ' . $o . ' "' . implode( '" "', $compress ) . '"';
+				
+				shell_exec( $command );
 			}
 
 			exec( '(cd ' . $tmp_path . ' && zip -r -9 ' . $zip_path . ' ./)' );
 			exec( 'rm -rf ' . $tmp_path );
-
+			
 			$download = true;
 		}
 
@@ -529,12 +568,15 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				<div class="span4">
 					<select name="compression">
 						<option value="">(none)</option>
-						<option value="low">Low</option>
-						<option selected="selected" value="medium">Medium</option>
-						<option value="high">High</option>
+						<option value="optipng-low">Low with OptiPNG</option>
+						<option value="optipng-medium">Medium with OptiPNG</option>
+						<option value="optipng-high">High with OptiPNG</option>
+						<option value="pngquant-low" selected="selected">Low with pngquant</option>
+						<option value="pngquant-medium">Medium with pngquant</option>
+						<option value="pngquant-high">High with pngquant</option>
 					</select>
 				</div>
-				<div class="span5">Applies an increasing level for <a href="http://optipng.sourceforge.net/">OptiPNG</a> compression resulting in 10% to 30% reduction on all PNG's and set a compression quality percentage ranging from 80% to 50% on JPEG's.</div>
+				<div class="span5">Applies an increasing level for <a href="http://optipng.sourceforge.net/">OptiPNG</a> / <a href="http://pngquant.org/">pngquant</a> compression resulting in 10% to 30% reduction on all PNG's and set a compression quality percentage ranging from 80% to 50% on JPEG's. <a href="http://pointlessramblings.com/posts/pngquant_vs_pngcrush_vs_optipng_vs_pngnq/">Compressors comparision</a></div>
 			</div>
 			<div class="row-fluid">
 				<div class="span3"><h4>Platforms</h4></div>
@@ -547,6 +589,9 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					</label>
 					<label class="checkbox inline" for="android">
 					  <input type="checkbox" name="platforms[]" value="android" checked="checked" id="android"> Android
+					</label>
+					<label class="checkbox inline" for="android">
+					  <input type="checkbox" name="platforms[]" value="androidtablet" checked="checked" id="android"> Android tablet
 					</label>
 					<label class="checkbox inline" for="mobileweb">
 					  <input type="checkbox" name="platforms[]" value="mobileweb" id="mobileweb"> Mobile Web
@@ -582,7 +627,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				<div class="span3"><h4>Alloy</h4></div>
 				<div class="span9">
 					<label class="checkbox" for="alloy">
-					  <input type="checkbox" name="alloy" value="1" checked="checked" id="alloy"> Writes to <code>app/assets</code> instead of <code>Resources</code>.
+					  <input type="checkbox" name="alloy" value="1" id="alloy"> Writes to <code>app/assets</code> instead of <code>Resources</code>.
 					</label>
 				</div>
 			</div>
