@@ -334,8 +334,8 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 				switch ( $_POST['compression'] ) {
 				case 'low': $o = 1; break;
-				case 'medium': $cq = 2; break;
-				case 'high': $cq = 3; break;
+				case 'medium': $o = 2; break;
+				case 'high': $o = 3; break;
 				}
 
 				shell_exec( 'optipng -v -o ' . $o . ' "' . implode( '" "', $compress ) . '"' );
