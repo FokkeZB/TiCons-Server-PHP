@@ -86,12 +86,11 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 					// Spotlight & Settings
 					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small@2x.png', 58, 72 );
-					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small@3x.png', 87, 72 );
 
-					// Spotlight & Settings (iOS7)
+					// Spotlight (iOS7)
 					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small-40.png', 40, 72 );
 					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small-40@2x.png', 80, 72 );
-
+	
 					// App (default)
 					$sizes[] = array( '/project' . $assets_path . '/iphone/appicon.png', 57, 72 );
 
@@ -103,6 +102,12 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 						// Spotlight && Settings
 						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small.png', 29, 72 );
+						
+						// Settings (iOS7)
+						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small@3x.png', 87, 72 );
+						
+						// Spotlight (iPhone6)
+						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small-40@3x.png', 120, 72 );
 
 						// App (iOS7)
 						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-60.png', 60, 72 );
@@ -220,6 +225,12 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$sizes[] = array( $ios_path . '/Default.png', 320, $_POST['apple'] ? 480 : 460, 72 );
 					$sizes[] = array( $ios_path . '/Default@2x.png', 640, 960, 72 );
 					$sizes[] = array( $ios_path . '/Default-568h@2x.png', 640, 1136, 72 );
+					
+					// iPhone 6
+					$sizes[] = array( $ios_path . '/Default-Portrait-667@2x.png', 750, 1334, 72 );
+					$sizes[] = array( $ios_path . '/Default-Landscape-667@2x.png', 1334, 750, 72 );
+					$sizes[] = array( $ios_path . '/Default-Portrait-1104@3x.png', 1242, 2208, 72 );
+					$sizes[] = array( $ios_path . '/Default-Landscape-1104@3x.png', 2208, 1242, 72 );
 				}
 
 				// iPad
@@ -510,7 +521,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					  </div>
 					</div>
 				</div>
-				<div class="span5">Splash screens come in all sorts of sizes and because they're not squarish, we need to crop. For this to work, you should select a 2048x2048 PNG where the logo or other important artwork is placed within the center 500x500 pixels.</div>
+				<div class="span5">Splash screens come in all sorts of sizes and because they're not squarish, we need to crop. For this to work, you should select a 2208x2208 PNG where the logo or other important artwork is placed within the center 1000x1000 pixels or so.</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span3"><h4>Border radius</h4></div>
