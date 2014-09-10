@@ -103,11 +103,8 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 						// Spotlight && Settings
 						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small.png', 29, 72 );
 						
-						// Settings (iOS7)
+						// Settings (iPhone 6 Plus)
 						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small@3x.png', 87, 72 );
-						
-						// Spotlight (iPhone6)
-						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-Small-40@3x.png', 120, 72 );
 
 						// App (iOS7)
 						$sizes[] = array( '/project' . $assets_path . '/iphone/appicon-60.png', 60, 72 );
