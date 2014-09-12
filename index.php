@@ -503,7 +503,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					  </div>
 					</div>
 				</div>
-				<div class="span5">For Android, Mobile Web, BlackBerry and Tizen you can select an alternative 512x512 PNG icon. These platforms do not apply any default effects and promote using transparency for create <a href="http://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html" target="_blank">unique shapes</a>.</div>
+				<div class="span5">For Android, Mobile Web, BlackBerry and Tizen you can select an alternative 512x512 PNG icon. These platforms do not apply any default effects and promote using transparency to create <a href="http://developer.android.com/guide/practices/ui_guidelines/icon_design_launcher.html" target="_blank">unique shapes</a>.</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span3"><h4>Splash</h4></div>
