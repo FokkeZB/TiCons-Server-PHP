@@ -146,6 +146,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$image->cropThumbnailImage( $size[ICON_SIZE], $size[ICON_SIZE] );
 					$image->setImageResolution( $size[ICON_DPI], $size[ICON_DPI] );
 					$image->setImageUnits( imagick::RESOLUTION_PIXELSPERINCH );
+					$image->setImageAlphaChannel( imagick::ALPHACHANNEL_DEACTIVATE );
 					$image->writeImage( $file );
 				}
 			}
@@ -203,6 +204,8 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					if ( $size[ICON_RADIUS] && $radius > 0) {
 						$px = round(($size[ICON_SIZE] / 100) * $radius);
 						$image->roundCorners($px, $px);
+					} else {
+						$image->setImageAlphaChannel( imagick::ALPHACHANNEL_DEACTIVATE );
 					}
 					
 					$image->setImageResolution( $size[ICON_DPI], $size[ICON_DPI] );
@@ -336,6 +339,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$image->cropThumbnailImage( $size[SPLASH_WIDTH], $size[SPLASH_HEIGHT] );
 					$image->setImageResolution( $size[SPLASH_DPI], $size[SPLASH_DPI] );
 					$image->setImageUnits( imagick::RESOLUTION_PIXELSPERINCH );
+					$image->setImageAlphaChannel( imagick::ALPHACHANNEL_DEACTIVATE );
 					$image->writeImage( $file );
 				}
 			}
