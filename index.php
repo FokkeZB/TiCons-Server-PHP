@@ -608,7 +608,19 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
         </form>
       </div>
 
-      <hr>
+  	<hr />
+      
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- TiCons -->
+	<ins class="adsbygoogle"
+     		style="display:inline-block;width:728px;height:90px"
+     		data-ad-client="ca-pub-2966238263022924"
+     		data-ad-slot="1890839799"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+
+	<hr />
 
 	  <a name="about"></a>
       <div class="row-fluid about">
