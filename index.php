@@ -228,8 +228,8 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					
 					// iPhone 6
 					$sizes[] = array( $ios_path . '/Default-667h@2x.png', 750, 1334, 72 );
-					$sizes[] = array( $ios_path . '/Default-Portrait-736@3x.png', 1242, 2208, 72 );
-					$sizes[] = array( $ios_path . '/Default-Landscape-736@3x.png', 2208, 1242, 72 );
+					$sizes[] = array( $ios_path . '/Default-Portrait-736h@3x.png', 1242, 2208, 72 );
+					$sizes[] = array( $ios_path . '/Default-Landscape-736h@3x.png', 2208, 1242, 72 );
 				}
 
 				// iPad
