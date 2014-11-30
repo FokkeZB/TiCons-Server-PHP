@@ -166,7 +166,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$sizes[] = array( '/platform/android/res/drawable-hdpi/appicon.png', 72, 240, !$hasIconTrans );
 					$sizes[] = array( '/platform/android/res/drawable-xhdpi/appicon.png', 96, 320, !$hasIconTrans );
 					$sizes[] = array( '/platform/android/res/drawable-xxhdpi/appicon.png', 144, 480, !$hasIconTrans );
-					$sizes[] = array( '/platform/android/res/drawable-xxhdpi/appicon.png', 192, 640, !$hasIconTrans );
+					$sizes[] = array( '/platform/android/res/drawable-xxxhdpi/appicon.png', 192, 640, !$hasIconTrans );
 					$sizes[] = array( '/GooglePlay.png', 512, 72, !$hasIconTrans );
 				}
 
