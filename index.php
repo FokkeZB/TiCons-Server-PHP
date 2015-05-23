@@ -178,7 +178,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$sizes[] = array( '/platform/android/res/drawable-hdpi/appicon.png', 72, 240, !$hasIconTrans );
 					$sizes[] = array( '/platform/android/res/drawable-xhdpi/appicon.png', 96, 320, !$hasIconTrans );
 					$sizes[] = array( '/platform/android/res/drawable-xxhdpi/appicon.png', 144, 480, !$hasIconTrans );
-					$sizes[] = array( '/platform/android/res/drawable-xxhdpi/appicon.png', 192, 640, !$hasIconTrans );
+					$sizes[] = array( '/platform/android/res/drawable-xxxhdpi/appicon.png', 192, 640, !$hasIconTrans );
 					$sizes[] = array( '/GooglePlay.png', 512, 72, !$hasIconTrans );
 				}
 
@@ -240,8 +240,8 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					
 					// iPhone 6
 					$sizes[] = array( $ios_path . '/Default-667h@2x.png', 750, 1334, 72 );
-					$sizes[] = array( $ios_path . '/Default-Portrait-736@3x.png', 1242, 2208, 72 );
-					$sizes[] = array( $ios_path . '/Default-Landscape-736@3x.png', 2208, 1242, 72 );
+					$sizes[] = array( $ios_path . '/Default-Portrait-736h@3x.png', 1242, 2208, 72 );
+					$sizes[] = array( $ios_path . '/Default-Landscape-736h@3x.png', 2208, 1242, 72 );
 				}
 
 				// iPad
@@ -526,7 +526,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				<div class="span3"><h4>Splash</h4></div>
 				<div class="span4">
 					<div class="fileupload fileupload-new" data-provides="fileupload">
-					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://placehold.it/100x100&text=%202048x2048%20" /></div>
+					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://placehold.it/100x100&text=%202208x2208%20" /></div>
 					  <div class="fileupload-preview fileupload-exists thumbnail" style="width: 100px; height: 100px;"></div>
 					  <div>
 						<span class="btn btn-file"><span class="fileupload-new">Select</span><span class="fileupload-exists">Replace</span><input type="file" name="splash" accept="image/png" /></span>
@@ -620,7 +620,19 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
         </form>
       </div>
 
-      <hr>
+  	<hr />
+      
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- TiCons -->
+	<ins class="adsbygoogle"
+     		style="display:inline-block;width:728px;height:90px"
+     		data-ad-client="ca-pub-2966238263022924"
+     		data-ad-slot="1890839799"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+
+	<hr />
 
 	  <a name="about"></a>
       <div class="row-fluid about">
