@@ -18,16 +18,28 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 	try {
 		$radius = (int) $_POST['radius'];
 
-		if ( $_FILES['icon']['error'] != 0 && $_FILES['icon']['error'] != 4 ) {
-			throw new Exception( $messages[$_FILES['icon']['error']] );
-		}
+		$fields = array('icon', 'icon-transparent', 'splash');
 
-		if ( $_FILES['icon-transparent']['error'] != 0 && $_FILES['icon-transparent']['error'] != 4 ) {
-			throw new Exception( $messages[$_FILES['icon-transparent']['error']] );
-		}
+		$finfo = new finfo(FILEINFO_MIME_TYPE);
 
-		if ( $_FILES['splash']['error'] != 0 && $_FILES['splash']['error'] != 4 ) {
-			throw new Exception( $messages[$_FILES['splash']['error']] );
+		foreach ($fields as $field) {
+
+			if ( $_FILES[$field]['error'] != 0 && $_FILES[$field]['error'] != 4 ) {
+				throw new Exception( $messages[$_FILES[$field]['error']] );
+			}
+
+			if ( $_FILES[$field]['error'] == 0) {
+
+				if ($_FILES[$field]['size'] > 10 * 1024 * 1024) {
+	        		throw new Exception('Image exceeded filesize limit.');
+	    		}
+
+			    if ($finfo->file($_FILES[$field]['tmp_name']) !== 'image/png') {
+			        throw new Exception('Invalid file format.');
+			    }
+
+			}
+
 		}
 
 		if ( $_FILES['icon']['error'] == 4 && $_FILES['icon-transparent']['error'] == 4 && $_FILES['splash']['error'] == 4 ) {
@@ -146,7 +158,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$image->cropThumbnailImage( $size[ICON_SIZE], $size[ICON_SIZE] );
 					$image->setImageResolution( $size[ICON_DPI], $size[ICON_DPI] );
 					$image->setImageUnits( imagick::RESOLUTION_PIXELSPERINCH );
-					// $image->setImageAlphaChannel( imagick::ALPHACHANNEL_DEACTIVATE );
+					$image->setImageAlphaChannel( 11 );
 					$image->writeImage( $file );
 				}
 			}
@@ -205,7 +217,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 						$px = round(($size[ICON_SIZE] / 100) * $radius);
 						$image->roundCorners($px, $px);
 					} else {
-						// $image->setImageAlphaChannel( imagick::ALPHACHANNEL_DEACTIVATE );
+						$image->setImageAlphaChannel( 11 );
 					}
 					
 					$image->setImageResolution( $size[ICON_DPI], $size[ICON_DPI] );
@@ -339,7 +351,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					$image->cropThumbnailImage( $size[SPLASH_WIDTH], $size[SPLASH_HEIGHT] );
 					$image->setImageResolution( $size[SPLASH_DPI], $size[SPLASH_DPI] );
 					$image->setImageUnits( imagick::RESOLUTION_PIXELSPERINCH );
-					// $image->setImageAlphaChannel( imagick::ALPHACHANNEL_DEACTIVATE );
+					$image->setImageAlphaChannel( 11 );
 					$image->writeImage( $file );
 				}
 			}
@@ -503,7 +515,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://placehold.it/100x100&text=%20%20512x512%20%20" /></div>
 					  <div class="fileupload-preview fileupload-exists thumbnail" style="width: 100px; height: 100px;"></div>
 					  <div>
-						<span class="btn btn-file"><span class="fileupload-new">Select</span><span class="fileupload-exists">Replace</span><input type="file" name="icon-transparent" /></span>
+						<span class="btn btn-file"><span class="fileupload-new">Select</span><span class="fileupload-exists">Replace</span><input type="file" name="icon-transparent" accept="image/png" /></span>
 						<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
 					  </div>
 					</div>
@@ -517,7 +529,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					  <div class="fileupload-new thumbnail" style="width: 100px; height: 100px;"><img src="http://placehold.it/100x100&text=%202048x2048%20" /></div>
 					  <div class="fileupload-preview fileupload-exists thumbnail" style="width: 100px; height: 100px;"></div>
 					  <div>
-						<span class="btn btn-file"><span class="fileupload-new">Select</span><span class="fileupload-exists">Replace</span><input type="file" name="splash" /></span>
+						<span class="btn btn-file"><span class="fileupload-new">Select</span><span class="fileupload-exists">Replace</span><input type="file" name="splash" accept="image/png" /></span>
 						<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
 					  </div>
 					</div>
@@ -656,4 +668,3 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
   </body>
 </html>
-<!-- 201402071956 -->
