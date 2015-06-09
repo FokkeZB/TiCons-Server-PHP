@@ -217,7 +217,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 						$px = round(($size[ICON_SIZE] / 100) * $radius);
 						$image->roundCorners($px, $px);
 					} else {
-						// $image->setImageAlphaChannel(imagick::ALPHACHANNEL_DEACTIVATE);
+						// $image->setImageResolutionAlphaChannel(imagick::ALPHACHANNEL_DEACTIVATE);
 					}
 					
 					$image->setImageResolution( $size[ICON_DPI], $size[ICON_DPI] );
@@ -393,7 +393,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		}
 
 	} catch ( Exception $e ) {
-		print_r($e);
 		$error = $e->getMessage();
 	}
 }
