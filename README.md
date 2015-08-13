@@ -1,3 +1,5 @@
+> **DEPRECATED:** Please see/use the [Node.js Arrow version](https://github.com/FokkeZB/TiCons-Server).
+
 #TiCons
 Generate a ZIP with all (iOS, Android, Mobile Web, Tizen, BlackBerry) Titanium [icons & splash screens](http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens) from just 2 or 3 files.
 
