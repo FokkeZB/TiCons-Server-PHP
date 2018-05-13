@@ -1,10 +1,7 @@
-> **DEPRECATED:** Please see/use the [Node.js Express version](https://github.com/FokkeZB/TiCons-Server).
+> **REPLACED BY [NODE.JS VERSION](https://github.com/FokkeZB/TiCons-Server)
 
 #TiCons
 Generate a ZIP with all (iOS, Android, Mobile Web, Tizen, BlackBerry) Titanium [icons & splash screens](http://docs.appcelerator.com/titanium/latest/#!/guide/Icons_and_Splash_Screens) from just 2 or 3 files.
-
-## Website
-Use TiCons online at: [http://ticons.fokkezb.nl/](http://ticons.fokkezb.nl/) (updated automagically)
 
 ## CLI
 TiCons also has an - even better - CLI at: [https://www.npmjs.org/package/ticons](https://www.npmjs.org/package/ticons)
